@@ -1,0 +1,27 @@
+modLoader="javafml"
+loaderVersion="[47,)"
+license="Not specified"
+
+[[mods]]
+modId="climber"
+version="1.0.0"
+displayName="The Climber"
+displayURL="https://mcreator.net"
+credits="I created using MCreator and Claude Sonnet 4.6"
+authors="notrussianguy"
+
+# Start of user code block mod configuration
+# End of user code block mod configuration
+
+[[dependencies.climber]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.20.1]"
+    ordering="AFTER"
+    side="BOTH"
+
+
+
+
+# Start of user code block dependencies configuration
+# End of user code block dependencies configuration
