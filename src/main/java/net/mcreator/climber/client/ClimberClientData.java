@@ -30,8 +30,8 @@ public class ClimberClientData {
     @Nullable public static Vec3 rightAnchorDir = null;
     @Nullable public static Vec3 leftAnchorDir  = null;
 
-    public static float   rightStamina   = ClimberConfig.STAMINA_MAX;
-    public static float   leftStamina    = ClimberConfig.STAMINA_MAX;
+    public static float   rightStamina   = ClimberConfig.INSTANCE.getStaminaMax();
+    public static float   leftStamina    = ClimberConfig.INSTANCE.getStaminaMax();
     public static boolean rightExhausted = false;
     public static boolean leftExhausted  = false;
 
@@ -48,8 +48,8 @@ public class ClimberClientData {
         @Nullable public Vec3 leftAnchor  = null;
         @Nullable public Vec3 rightAnchorDir = null;
         @Nullable public Vec3 leftAnchorDir  = null;
-        public float   rightStamina   = ClimberConfig.STAMINA_MAX;
-        public float   leftStamina    = ClimberConfig.STAMINA_MAX;
+        public float   rightStamina   = ClimberConfig.INSTANCE.getStaminaMax();
+        public float   leftStamina    = ClimberConfig.INSTANCE.getStaminaMax();
         public boolean rightExhausted = false;
         public boolean leftExhausted  = false;
     }
@@ -129,21 +129,40 @@ public class ClimberClientData {
     }
 
     // -----------------------------------------------------------------
-    // Blush helpers
+    // Blush helpers (smoothed to avoid jarring snap)
     // -----------------------------------------------------------------
-    public static float getBlushFactor(boolean rightHand) {
+    public static float smoothBlushRight = 0f;
+    public static float smoothBlushLeft  = 0f;
+    private static final float BLUSH_LERP = 0.04f; // per-tick lerp speed
+
+    /** Call once per client tick to advance blush smoothing. */
+    public static void tickBlush() {
+        smoothBlushRight = lerp(smoothBlushRight, getRawBlush(false, rightStamina), BLUSH_LERP);
+        smoothBlushLeft  = lerp(smoothBlushLeft,  getRawBlush(false, leftStamina),  BLUSH_LERP);
+    }
+
+    private static float lerp(float current, float target, float speed) {
+        return current + (target - current) * speed;
+    }
+
+    private static float getRawBlush(boolean ignored, float stamina) {
         if (!ClimberConfig.INSTANCE.isStaminaEnabled()) return 0f;
-        float stamina = rightHand ? rightStamina : leftStamina;
-        float threshold = ClimberConfig.STAMINA_MAX * 0.5f;
+        float threshold = ClimberConfig.INSTANCE.getStaminaMax() * 0.5f;
         if (stamina >= threshold) return 0f;
         return 1f - (stamina / threshold);
+    }
+
+    public static float getBlushFactor(boolean rightHand) {
+        if (!ClimberConfig.INSTANCE.isStaminaEnabled()) return 0f;
+        return rightHand ? smoothBlushRight : smoothBlushLeft;
     }
 
     public static float getBlushFactor(@Nullable RemoteClimbState state, boolean rightHand) {
         if (!ClimberConfig.INSTANCE.isStaminaEnabled()) return 0f;
         if (state == null) return 0f;
         float stamina = rightHand ? state.rightStamina : state.leftStamina;
-        float threshold = ClimberConfig.STAMINA_MAX * 0.5f;
+        // Remote players use immediate blush (no per-entity smoothing needed)
+        float threshold = ClimberConfig.INSTANCE.getStaminaMax() * 0.5f;
         if (stamina >= threshold) return 0f;
         return 1f - (stamina / threshold);
     }

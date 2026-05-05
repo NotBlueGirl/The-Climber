@@ -24,6 +24,7 @@ import net.mcreator.climber.network.HandGrabPacket;
 import net.mcreator.climber.network.ClimbStatePacket;
 import net.mcreator.climber.network.ClimbJumpPacket;
 import net.mcreator.climber.network.AnchorSyncPacket;
+import net.mcreator.climber.init.ClimberModSounds;
 import net.mcreator.climber.event.ClimberServerEvents;
 import net.mcreator.climber.client.ClimberClientSetup;
 import net.mcreator.climber.capability.ClimbCapability;
@@ -47,6 +48,7 @@ public class ClimberMod {
 		// End of user code block mod constructor
 		MinecraftForge.EVENT_BUS.register(this);
 		IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
+		ClimberModSounds.REGISTRY.register(bus);
 		// Start of user code block mod init
 		ClimbCapability.register(bus);
 		MinecraftForge.EVENT_BUS.register(new ClimberServerEvents());

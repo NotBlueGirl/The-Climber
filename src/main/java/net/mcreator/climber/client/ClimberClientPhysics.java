@@ -21,6 +21,9 @@ public class ClimberClientPhysics {
         // Only apply to our local player
         if (player != mc.player) return;
 
+        // Advance blush smoothing every tick
+        ClimberClientData.tickBlush();
+
         if (!ClimberClientData.climbEnabled || (!ClimberClientData.rightGrabbing && !ClimberClientData.leftGrabbing)) {
             player.setNoGravity(false);
             return;

@@ -116,6 +116,7 @@ public class HandGrabPacket {
 
     private static boolean isGrabbableAt(Level level, BlockPos pos) {
         BlockState state = level.getBlockState(pos);
+        // Always enforce the solid-block rule, regardless of include/exclude lists
         if (state.isAir() || !state.isSolidRender(level, pos)) return false;
 
         ResourceLocation id = ForgeRegistries.BLOCKS.getKey(state.getBlock());

@@ -11,6 +11,8 @@ public class ClimberClientSetup {
 
     public static void init(IEventBus modBus) {
         modBus.addListener(ClimberClientSetup::onClientSetup);
+        // Register the keybind on the mod bus
+        ClimberKeybinds.registerKeys(modBus);
     }
 
     private static void onClientSetup(FMLClientSetupEvent event) {
@@ -19,5 +21,7 @@ public class ClimberClientSetup {
         MinecraftForge.EVENT_BUS.register(new ClimberArmRenderer());
         // BUG FIX: Client physics must be registered on the client side only
         MinecraftForge.EVENT_BUS.register(new ClimberClientPhysics());
+        // Keybind polling handler
+        MinecraftForge.EVENT_BUS.register(new ClimberKeybinds());
     }
 }

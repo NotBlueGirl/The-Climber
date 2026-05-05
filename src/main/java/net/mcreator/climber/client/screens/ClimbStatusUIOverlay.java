@@ -72,7 +72,7 @@ public class ClimbStatusUIOverlay {
      */
     private static String selectTexture(String prefix, float stamina) {
         // Normalise to 0-100 range regardless of STAMINA_MAX value
-        float pct = (stamina / ClimberConfig.STAMINA_MAX) * 100f;
+        float pct = (stamina / ClimberConfig.INSTANCE.getStaminaMax()) * 100f;
 
         if (pct > THRESHOLD_HIGH) {
             return prefix + "_1";

@@ -88,8 +88,8 @@ public class ClimbCapability {
         @Nullable private Vec3 rightAnchor = null;
         @Nullable private Vec3 leftAnchor  = null;
 
-        private float   rightStamina   = ClimberConfig.STAMINA_MAX;
-        private float   leftStamina    = ClimberConfig.STAMINA_MAX;
+        private float   rightStamina   = ClimberConfig.INSTANCE.getStaminaMax();
+        private float   leftStamina    = ClimberConfig.INSTANCE.getStaminaMax();
         private boolean rightExhausted = false;
         private boolean leftExhausted  = false;
 
@@ -109,10 +109,10 @@ public class ClimbCapability {
         @Override public void setLeftAnchor(@Nullable Vec3 v)   { leftAnchor = v; }
 
         @Override public float getRightStamina()                { return rightStamina; }
-        @Override public void  setRightStamina(float v)         { rightStamina = Math.max(0, Math.min(ClimberConfig.STAMINA_MAX, v)); }
+        @Override public void  setRightStamina(float v)         { rightStamina = Math.max(0, Math.min(ClimberConfig.INSTANCE.getStaminaMax(), v)); }
 
         @Override public float getLeftStamina()                 { return leftStamina; }
-        @Override public void  setLeftStamina(float v)          { leftStamina  = Math.max(0, Math.min(ClimberConfig.STAMINA_MAX, v)); }
+        @Override public void  setLeftStamina(float v)          { leftStamina  = Math.max(0, Math.min(ClimberConfig.INSTANCE.getStaminaMax(), v)); }
 
         @Override public boolean isRightExhausted()             { return rightExhausted; }
         @Override public void    setRightExhausted(boolean v)   { rightExhausted = v; }
@@ -140,8 +140,8 @@ public class ClimbCapability {
             leftHandGrabbing  = tag.getBoolean("leftHandGrabbing");
             rightAnchor = loadVec(tag, "rightAnchor");
             leftAnchor  = loadVec(tag, "leftAnchor");
-            rightStamina   = tag.contains("rightStamina")   ? tag.getFloat("rightStamina")   : ClimberConfig.STAMINA_MAX;
-            leftStamina    = tag.contains("leftStamina")    ? tag.getFloat("leftStamina")    : ClimberConfig.STAMINA_MAX;
+            rightStamina   = tag.contains("rightStamina")   ? tag.getFloat("rightStamina")   : ClimberConfig.INSTANCE.getStaminaMax();
+            leftStamina    = tag.contains("leftStamina")    ? tag.getFloat("leftStamina")    : ClimberConfig.INSTANCE.getStaminaMax();
             rightExhausted = tag.contains("rightExhausted") && tag.getBoolean("rightExhausted");
             leftExhausted  = tag.contains("leftExhausted")  && tag.getBoolean("leftExhausted");
         }

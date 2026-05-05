@@ -1,0 +1,18 @@
+{
+  "grab-hit": {
+    "sounds": [
+      {
+        "name": "climber:13209-grab-hit_2",
+        "stream": false
+      }
+    ]
+  },
+  "grab-jump": {
+    "sounds": [
+      {
+        "name": "climber:13209-grab-jump_2",
+        "stream": false
+      }
+    ]
+  }
+}

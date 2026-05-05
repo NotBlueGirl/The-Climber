@@ -64,7 +64,7 @@ public class ClimberServerEvents {
         boolean changed = false;
 
         if (data.isRightHandGrabbing()) {
-            float s = data.getRightStamina() - ClimberConfig.STAMINA_DRAIN_RATE;
+            float s = data.getRightStamina() - ClimberConfig.INSTANCE.getStaminaDrainRate();
             data.setRightStamina(s);
             if (s <= 0 && !data.isRightExhausted()) {
                 data.setRightExhausted(true);
@@ -72,14 +72,14 @@ public class ClimberServerEvents {
             }
             changed = true;
         } else if (!data.isRightExhausted()) {
-            float s = data.getRightStamina() + ClimberConfig.STAMINA_REGEN_RATE;
+            float s = data.getRightStamina() + ClimberConfig.INSTANCE.getStaminaRegenRate();
             data.setRightStamina(s);
-            if (s >= ClimberConfig.STAMINA_MAX) data.setRightStamina(ClimberConfig.STAMINA_MAX);
+            if (s >= ClimberConfig.INSTANCE.getStaminaMax()) data.setRightStamina(ClimberConfig.INSTANCE.getStaminaMax());
             changed = true;
         }
 
         if (data.isLeftHandGrabbing()) {
-            float s = data.getLeftStamina() - ClimberConfig.STAMINA_DRAIN_RATE;
+            float s = data.getLeftStamina() - ClimberConfig.INSTANCE.getStaminaDrainRate();
             data.setLeftStamina(s);
             if (s <= 0 && !data.isLeftExhausted()) {
                 data.setLeftExhausted(true);
@@ -87,9 +87,9 @@ public class ClimberServerEvents {
             }
             changed = true;
         } else if (!data.isLeftExhausted()) {
-            float s = data.getLeftStamina() + ClimberConfig.STAMINA_REGEN_RATE;
+            float s = data.getLeftStamina() + ClimberConfig.INSTANCE.getStaminaRegenRate();
             data.setLeftStamina(s);
-            if (s >= ClimberConfig.STAMINA_MAX) data.setLeftStamina(ClimberConfig.STAMINA_MAX);
+            if (s >= ClimberConfig.INSTANCE.getStaminaMax()) data.setLeftStamina(ClimberConfig.INSTANCE.getStaminaMax());
             changed = true;
         }
 
@@ -102,18 +102,18 @@ public class ClimberServerEvents {
         boolean changed = false;
 
         if (!data.isRightHandGrabbing()) {
-            float newR = Math.min(ClimberConfig.STAMINA_MAX, data.getRightStamina() + ClimberConfig.STAMINA_REGEN_RATE);
+            float newR = Math.min(ClimberConfig.INSTANCE.getStaminaMax(), data.getRightStamina() + ClimberConfig.INSTANCE.getStaminaRegenRate());
             data.setRightStamina(newR);
-            if (data.isRightExhausted() && newR >= ClimberConfig.STAMINA_MAX) {
+            if (data.isRightExhausted() && newR >= ClimberConfig.INSTANCE.getStaminaMax()) {
                 data.setRightExhausted(false);
             }
             changed = true;
         }
 
         if (!data.isLeftHandGrabbing()) {
-            float newL = Math.min(ClimberConfig.STAMINA_MAX, data.getLeftStamina() + ClimberConfig.STAMINA_REGEN_RATE);
+            float newL = Math.min(ClimberConfig.INSTANCE.getStaminaMax(), data.getLeftStamina() + ClimberConfig.INSTANCE.getStaminaRegenRate());
             data.setLeftStamina(newL);
-            if (data.isLeftExhausted() && newL >= ClimberConfig.STAMINA_MAX) {
+            if (data.isLeftExhausted() && newL >= ClimberConfig.INSTANCE.getStaminaMax()) {
                 data.setLeftExhausted(false);
             }
             changed = true;
@@ -225,11 +225,13 @@ public class ClimberServerEvents {
                     && data.getLeftAnchor() != null) {
 
                 Vec3 look = player.getLookAngle();
-                impulse = new Vec3(look.x, look.y + 0.55, look.z).normalize().scale(0.85);
+                float strength = ClimberConfig.INSTANCE.getStrengthJumpBothHands();
+                impulse = new Vec3(look.x, look.y + 0.55, look.z).normalize().scale(strength);
 
             } else {
                 Vec3 look = player.getLookAngle();
-                impulse = new Vec3(look.x, look.y + 0.3, look.z).normalize().scale(0.85);
+                float strength = ClimberConfig.INSTANCE.getStrengthJumpOneHand();
+                impulse = new Vec3(look.x, look.y + 0.3, look.z).normalize().scale(strength);
             }
 
             player.setDeltaMovement(impulse);
